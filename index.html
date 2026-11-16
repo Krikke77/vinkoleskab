@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Vinkøleskab</title>
+  <meta name="description" content="Privat oversigt over vinkøleskabet: placering, producent, årgang og pris.">
+  <meta name="theme-color" content="#f6f1ea">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Vinkøleskab">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%237c2433' d='M9 3h14c-.2 8-3 11.2-7 13.2V25h5v3H11v-3h5v-8.8C12 14.2 9.2 11 9 3z'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,620&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#view">Spring til indhold</a>
+  <div class="wrap">
+    <header class="top">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+          <path fill="#7c2433" d="M8 3h16c-.3 8.2-3.4 11.6-8 13.6V25h5.2v3H10.8v-3H16v-8.4C11.4 14.6 8.3 11.2 8 3z"/>
+          <path fill="#f4efe4" opacity=".45" d="M12 6h8c-.3 4.2-1.6 6.4-4 7.8C13.6 12.4 12.3 10.2 12 6z"/>
+        </svg>
+        <div>
+          <p class="eyebrow">Privat kælder</p>
+          <h1>Vinkøleskab</h1>
+        </div>
+      </div>
+      <nav class="nav" role="tablist" aria-label="Visninger">
+        <button type="button" role="tab" data-tab="oversigt" aria-selected="true"><span class="tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="8.5" rx="2"/><rect x="13.5" y="3.5" width="7" height="5" rx="2"/><rect x="13.5" y="11.5" width="7" height="9" rx="2"/><rect x="3.5" y="15" width="7" height="5.5" rx="2"/></svg></span><span class="tab-label">Oversigt</span></button>
+        <button type="button" role="tab" data-tab="katalog"><span class="tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21.5h8"/><path d="M12 15v6.5"/><path d="M7.2 9.5h9.6"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-1.8-7.5H8.8C7.5 6 7 8 7 10a5 5 0 0 0 5 5Z"/></svg></span><span class="tab-label">Katalog</span></button>
+        <button type="button" role="tab" data-tab="historik"><span class="tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5"/><path d="M3.5 3.5v5h5"/><path d="M12 7.5V12l3.2 2"/></svg><span id="hist-count" class="tab-badge"></span></span><span class="tab-label">Historik</span></button>
+      </nav>
+      <div class="top-actions">
+        <p id="saved" class="saved"></p>
+        <div class="fab" id="fab">
+          <div class="fab-pop" id="fab-pop" hidden>
+            <button type="button" data-fab="add"><span class="fab-mark" aria-hidden="true">+</span>Ny flaske</button>
+            <button type="button" class="is-remove" data-fab="remove"><span class="fab-mark" aria-hidden="true">−</span>Fjern flaske</button>
+          </div>
+          <button type="button" class="btn primary" id="add-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="fab-pop"><span aria-hidden="true" class="add-plus">+</span><span class="add-label">Flaske</span></button>
+        </div>
+        <details class="menu">
+          <summary>Data</summary>
+          <div class="menu-pop">
+            <button type="button" id="key-btn">Vinkilde</button>
+            <button type="button" id="labels-btn">Hent etiketbilleder</button>
+            <button type="button" id="prices-btn">Slå manglende priser op</button>
+            <button type="button" id="export-btn">Eksporter backup</button>
+            <button type="button" id="import-btn">Importer backup</button>
+            <button type="button" id="reset-btn">Nulstil til oversigten</button>
+          </div>
+        </details>
+        <input id="import-file" type="file" accept="application/json,.json" hidden>
+      </div>
+    </header>
+
+    <div class="tools">
+      <div class="tool-row">
+        <label class="search">
+          <span class="sr">Søg i kælderen</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16.5L20 20.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input id="search" type="search" placeholder="Søg på vin, producent, område eller plads" autocomplete="off">
+          <button type="button" id="clear-search" hidden>Ryd</button>
+        </label>
+      </div>
+      <div id="filters" class="tool-row"></div>
+      <p id="resultline" aria-live="polite"></p>
+    </div>
+
+    <main id="view" tabindex="-1"></main>
+  </div>
+
+  <div id="backdrop" hidden></div>
+  <aside id="drawer" hidden aria-label="Flaske"></aside>
+  <div id="modal" hidden></div>
+  <div id="toast" role="status"></div>
+
+  <script src="data.js"></script>
+  <script src="labels.js"></script>
+  <script src="prices.js"></script>
+  <script src="secrets.js"></script>
+  <script src="lookup.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
